@@ -8,12 +8,30 @@ resource "aws_instance" "centos" {
 	ami           = "ami-030ff268bd7b4e8b5"
 	instance_type = "t2.micro"
 	count = var.instance_count
+	
 	security_groups = [
         aws_security_group.security_group.name
     ]
+	
 	tags = {
 		Name = var.name
 	}
+	
+	provisioner "remote-exec" {
+	
+		connection {
+			type = "ssh"
+			user = "root"
+			password = "thinknyx@123"
+			host = self.public_ip
+		}
+		
+		inline = [
+			"sudo yum install -y git"
+		]
+	
+	}
+	
 }
 
 resource "aws_security_group" "security_group" {

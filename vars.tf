@@ -7,5 +7,5 @@ variable "aws_az" {
 }
 
 variable "instance_count" {
-	default = "2"
+	default = "1"
 }
