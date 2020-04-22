@@ -7,12 +7,13 @@ provider "aws" {
 resource "aws_instance" "centos" {
 	ami           = "ami-030ff268bd7b4e8b5"
 	instance_type = "t2.micro"
-	count = 1
+	count = 2
 	security_groups = [
         aws_security_group.security_group.name
     ]
 	tags = {
 		Name = "Terraform-Demo"
+		Environment = "Production"
 	}
 }
 
