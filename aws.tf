@@ -56,3 +56,10 @@ resource "aws_ebs_volume" "volume" {
     Name = var.name
   }
 }
+
+resource "aws_volume_attachment" "myserverebsattch" {
+  count = var.instance_count
+  device_name = "/dev/sdf"
+  volume_id = aws_ebs_volume.volume[count.index].id
+  instance_id = aws_instance.centos[count.index].id
+}
