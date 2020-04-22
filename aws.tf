@@ -25,11 +25,14 @@ resource "aws_instance" "centos" {
 			password = "thinknyx@123"
 			host = self.public_ip
 		}
-		
 		inline = [
-			"sudo yum install -y git"
+			"sudo yum install -y git",
+			"echo 'this is to show the demo' >> ibm-terraform-demo.txt"
 		]
+	}
 	
+	provisioner "local-exec" {
+		command = "echo self.public_ip >> host-ip"
 	}
 	
 }
