@@ -7,18 +7,17 @@ provider "aws" {
 resource "aws_instance" "centos" {
 	ami           = "ami-030ff268bd7b4e8b5"
 	instance_type = "t2.micro"
-	count = 2
+	count = var.instance_count
 	security_groups = [
         aws_security_group.security_group.name
     ]
 	tags = {
-		Name = "Terraform-Demo"
-		Environment = "Production"
+		Name = var.name
 	}
 }
 
 resource "aws_security_group" "security_group" {
-  name        = "terraform-demo"
+  name        = var.name
   description = "Allow TLS inbound traffic"
   
   ingress {
@@ -45,6 +44,15 @@ resource "aws_security_group" "security_group" {
   }
 
   tags = {
-    Name = "terraform-demo"
+    Name = var.name
+  }
+}
+
+resource "aws_ebs_volume" "volume" {
+  availability_zone = var.aws_az
+  size              = 10
+  count				= var.instance_count
+  tags = {
+    Name = var.name
   }
 }
