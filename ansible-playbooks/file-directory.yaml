@@ -31,3 +31,12 @@
 
   - name: printing script execution step on screen
     debug: var=output.stdout_lines
+
+  - name: running SHELL module
+    shell: /opt/test/script.sh yogesh
+    register: output
+
+  - name: printing Shell execution step on screen
+    debug: var=output.stdout_lines
+
+
