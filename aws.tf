@@ -9,6 +9,8 @@ resource "aws_instance" "centos" {
 	instance_type = "t2.micro"
 	count = var.instance_count
 	
+	key
+	
 	security_groups = [
         aws_security_group.security_group.name
     ]
