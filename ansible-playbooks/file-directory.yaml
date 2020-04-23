@@ -1,0 +1,28 @@
+---
+- name: working on file & directoty stuff
+  hosts: ibm
+
+  tasks: 
+  - name: create a directory
+    file: 
+      path: /opt/test
+      mode: 755
+      state: directory
+
+  - name: copying file from Ansible Master to Node     
+    copy: 
+      src: script.sh
+      dest: /opt/test
+      mode: 755
+
+  - name: copying file from node to  other path on same Node
+    copy:
+      src: /opt/test/script.sh
+      dest: /tmp
+      mode: 755
+      remote_src: yes
+
+  - name: running scripts on node from master
+    script: script.sh
+    args: 
+      chdir: /opt/test      
