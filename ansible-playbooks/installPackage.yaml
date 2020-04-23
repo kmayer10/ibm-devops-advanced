@@ -1,0 +1,9 @@
+---
+- name: installing ntp package
+  hosts: all
+
+  tasks: 
+  - name: installing ntp package
+    yum: 
+      name: ntp
+      state: present
