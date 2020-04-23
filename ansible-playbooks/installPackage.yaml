@@ -1,9 +1,19 @@
 ---
 - name: installing ntp package
-  hosts: all
+  hosts: "{{ hostgroupname  }}"
+
+#  remote_user: appuser
+#  become: yes
+#  become_user: root
 
   tasks: 
   - name: installing ntp package
     yum: 
       name: ntp
       state: present
+
+  - name: starting ntpd service
+    service: 
+      name: ntpd
+      state: started
+      enabled: yes

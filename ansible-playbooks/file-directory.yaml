@@ -2,6 +2,9 @@
 - name: working on file & directoty stuff
   hosts: ibm
 
+  vars: 
+    user: 
+
   tasks: 
   - name: create a directory
     file: 
