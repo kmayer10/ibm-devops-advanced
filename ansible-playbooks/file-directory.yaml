@@ -26,3 +26,8 @@
     script: script.sh
     args: 
       chdir: /opt/test      
+      executable: sh
+    register: output
+
+  - name: printing script execution step on screen
+    debug: var=output.stdout_lines
