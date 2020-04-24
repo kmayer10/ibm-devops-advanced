@@ -22,7 +22,7 @@
       group: "{{ ansible_user_gid }}"
       
   - name: configuring POD network
-    shell: kubectl apply -f https://docs.projectcalico.org/v3.11/manifests/calico.yaml && sleep 60 && kubectl get nodes
+    shell: kubectl apply -f https://docs.projectcalico.org/v3.11/manifests/calico.yaml && sleep 10 && kubectl get nodes
     register: output
     
   - name: Generating Join Command
@@ -33,6 +33,7 @@
       src: /tmp/join-command.sh
       dest: join-command.sh
       mode: 755
-    
+      flat: yes
+      
   - name: Printing output on Console
     debug: var=output.stdout_lines
