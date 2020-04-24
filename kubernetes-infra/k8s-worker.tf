@@ -10,7 +10,7 @@ resource "aws_instance" "ansible-node" {
     ]
 		
 	tags = {
-		Name 		= 	"ansible-node-kul"
+		Name 		= 	"k8s-worker-kul"
 	}
 	
 	provisioner "remote-exec" {
@@ -22,7 +22,7 @@ resource "aws_instance" "ansible-node" {
 			host = self.public_ip
 		}
 		inline = [
-			"sudo hostnamectl set-hostname ansible-node"
+			"sudo hostnamectl set-hostname worker"
 		]
 	}
 	
@@ -31,10 +31,12 @@ resource "aws_instance" "ansible-node" {
 			type = "ssh"
 			user = "root"
 			password = "thinknyx@123"
-			host = aws_instance.ansible-master[count.index].public_ip
+			host = aws_instance.k8s-master.public_ip
 		}
 		inline = [
-			"echo ${self.public_ip} >> /etc/ansible/hosts"
+			"sudo echo '[worker]' >> /etc/ansible/hosts",
+			"sudo echo ${self.public_ip} >> /etc/ansible/hosts",
+			"sudo echo '${self.private_ip} worker' >> /etc/hosts"
 		]
 	}
 	

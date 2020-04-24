@@ -1,12 +1,6 @@
-provider "aws" {
-	region = "us-east-1"
-}
-
-# Creating CENTOS Server
-resource "aws_instance" "ansible-master" {
+resource "aws_instance" "k8s-master" {
 	ami           	= 	"ami-030ff268bd7b4e8b5"
 	instance_type 	= 	var.master_instance_type
-	count 			= 	var.master_instance_count
 	key_name		= 	"Kul-Thinknyx"
 
 	security_groups = [
@@ -14,7 +8,7 @@ resource "aws_instance" "ansible-master" {
     ]
 	
 	tags = {
-		Name 		= 	"ansible-master-kul"
+		Name 		= 	"k8s-master-kul"
 	}
 	
 	provisioner "remote-exec" {
@@ -26,16 +20,18 @@ resource "aws_instance" "ansible-master" {
 			host = self.public_ip
 		}
 		inline = [
-			"sudo hostnamectl set-hostname ansible-master",
+			"sudo hostnamectl set-hostname master",
 			"sudo yum install -y wget",
 			"sudo wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm",
 			"sudo yum install -y ansible",
-			"sudo echo 'host_key_checking = False' >> /etc/ansible/ansible.cfg"
+			"sudo echo '[master]' >> /etc/ansible/hosts",
+			"sudo echo ${self.public_ip} >> /etc/ansible/hosts",
+			"sudo echo '${self.private_ip} master' >> /etc/hosts"
 		]
 	}
 	
 	provisioner "local-exec" {
 		command = "echo ${self.public_ip} > public_ip"
 	}
-	
 }
+    

@@ -1,0 +1,59 @@
+---
+- name: Installing Docker
+  hosts: all
+  
+  vars: 
+    dockerceversion: docker-ce-{{ dockerversion }}
+    dockercliversion: docker-ce-{{ dockerversion }}
+    containerdioversion: containerd.io-{{ containerdversion }}
+
+  tasks:
+    - name: Install required dependency packages
+      yum:
+        name: 
+          - yum-utils
+          - device-mapper-persistent-data
+          - lvm2
+        state: latest
+
+    - name: Add Docker repo
+      get_url:
+        url: https://download.docker.com/linux/centos/docker-ce.repo
+        dest: /etc/yum.repos.d/docker-ce.repo
+
+    - name: Install Docker
+      package:
+        name: 
+          - "{{ dockerceversion }}"
+          - "{{ dockercliversion }}"
+          - "{{ containerdioversion }}"
+
+        state: present
+    
+    - name: Creating Docker folder
+      file: 
+        path: /etc/docker
+        state: directory
+        mode: 755
+        
+    - name: Copy Docker deamon file
+      copy: 
+        src: daemon.json
+        dest: /etc/docker/daemon.json
+        mode: 755
+      notify: 
+      - restart-docker
+        
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+        
+    handlers: 
+    - name: restart-docker
+      service:
+        name: docker
+        state: restarted
+        enabled: yes
+    
