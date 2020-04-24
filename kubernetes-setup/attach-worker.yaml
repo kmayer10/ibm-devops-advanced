@@ -1,0 +1,17 @@
+---
+- name: Attaching Worker
+  hosts: worker
+  
+  tasks: 
+  - name: copying join command script
+    copy: 
+      src: join-command.sh
+      dest: /tmp/
+      mode: 755
+	  
+  - name: Run join command
+    shell: /tmp/join-command.sh
+    register: output
+    
+  - name: Print Join Command output
+    debug: var=output.stdout_lines  
