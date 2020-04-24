@@ -9,7 +9,7 @@
       dest: /tmp/
       mode: 755
   - name: Run join command
-    shell: /tmp/join-command.sh
+    shell: echo 1 > /proc/sys/net/bridge/bridge-nf-call-iptables && /tmp/join-command.sh
     register: output
   - name: Print Join Command output
     debug: var=output.stdout_lines  
