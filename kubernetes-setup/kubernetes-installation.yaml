@@ -20,6 +20,7 @@
         - kubeadm
         - kubectl
       state: latest        
+      disable_excludes: kubernetes
   - name: Starting & enabling kubernetes service
     service: 
       name: kubelet

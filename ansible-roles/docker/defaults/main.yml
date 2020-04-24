@@ -1,0 +1,5 @@
+---
+
+    dockerceversion: docker-ce-19.03.8
+    dockercliversion: docker-ce-19.03.8
+    containerdioversion: containerd.io-1.2.13

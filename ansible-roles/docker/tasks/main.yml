@@ -1,0 +1,37 @@
+---
+
+    - name: installing dependency
+      import_tasks: install-dependency.yaml
+    - name: Add Docker repo
+      get_url:
+        url: https://download.docker.com/linux/centos/docker-ce.repo
+        dest: /etc/yum.repos.d/docker-ce.repo
+
+    - name: Install Docker
+      package:
+        name: 
+          - "{{ dockerceversion }}"
+          - "{{ dockercliversion }}"
+          - "{{ containerdioversion }}"
+
+        state: present
+    
+    - name: Creating Docker folder
+      file: 
+        path: /etc/docker
+        state: directory
+        mode: 755
+        
+    - name: Copy Docker deamon file
+      copy: 
+        src: daemon.json
+        dest: /etc/docker/daemon.json
+        mode: 755
+      notify: 
+      - restart-docker
+        
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
