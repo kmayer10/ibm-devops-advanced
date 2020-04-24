@@ -1,0 +1,12 @@
+---
+- name: installing packages
+  hosts: all
+
+  tasks: 
+  - name: installing packages
+    yum: 
+      name: 
+        - git
+        - java
+      state: present
+    when: ansible_hostname == "ansible-node"

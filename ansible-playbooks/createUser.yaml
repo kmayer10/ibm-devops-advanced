@@ -1,0 +1,10 @@
+---
+- name: Ensure user exist
+  hosts: ibm
+  
+  tasks: 
+  
+  - name: Creating user
+    user: 
+      name: ibmuser
+      state: present
