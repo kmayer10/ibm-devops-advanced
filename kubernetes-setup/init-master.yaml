@@ -4,7 +4,7 @@
   
   tasks: 
   - name: Initialising Master
-    shell: kubeadm init ----apiserver-advertise-address={{ ansible_eth0.ipv4.address }}
+    shell: kubeadm init --apiserver-advertise-address={{ ansible_eth0.ipv4.address }}
     register: output
 
   - name: Setting KUBECONFIG
