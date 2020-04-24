@@ -9,14 +9,14 @@
 
   - name: Setting KUBECONFIG
     file: 
-      path: "{{ home }}"/.kube
+      path: "{{ ansible_user_dir }}"/.kube
       state: directory
       
   - name: copying config file
     copy: 
       remote_src: yes
       src: /etc/kubernetes/admin.conf
-      dest: "{{ home }}"/.kube/config
+      dest: "{{ ansible_user_dir }}"/.kube/config
       owner: "{{ ansible_user_id }}"
       group: "{{ ansible_user_gid }}"
       
