@@ -1,0 +1,28 @@
+---
+- name: Initialising & Configuring Master for Usage
+  hosts: master
+  
+  tasks: 
+  - name: Initialising Master
+    shell: kubeadm init ----apiserver-advertise-address={{ ansible_eth0.ipv4.address }}
+    register: output
+
+  - name: Setting KUBECONFIG
+    file: 
+      path: {{ home }}/.kube
+      state: directory
+      
+  - name: copying config file
+    copy: 
+      remote_src: yes
+      src: /etc/kubernetes/admin.conf
+      dest: {{ home }}/.kube/config
+      owner: {{ ansible_user_id }}
+      group: {{ ansible_user_gid }}
+      
+  - name: configuring POD network
+    shell: kubectl apply -f https://docs.projectcalico.org/v3.11/manifests/calico.yaml && sleep 60 && kubetctl get nodes
+    register: output
+    
+  - name: Printing output on Console
+    debug: var=output.stdout_lines
