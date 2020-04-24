@@ -50,7 +50,7 @@
         state: started
         enabled: yes
         
-    handlers: 
+  handlers: 
     - name: restart-docker
       service:
         name: docker

@@ -1,0 +1,28 @@
+---
+- name: Installing KUBEADM, KUBELET, KUBECTL
+  hosts: all
+  
+  tasks: 
+  
+  - name: copy kubernetes repo
+    copy: 
+      src: kubernetes.repo
+      dest: /etc/yum.repos.d/kubernetes.repo
+      mode: 755
+      
+  - name: running SE Linux in permissive mode
+    shell: setenforce 0 && sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+    
+  - name: installing kubernetes packges
+    yum: 
+      name: 
+        - kubelet
+        - kubeadm
+        - kubectl
+        
+  - name: Starting & enabling kubernetes service
+    service: 
+      name: kubelet
+      state: started
+      enabled: yes
+  
