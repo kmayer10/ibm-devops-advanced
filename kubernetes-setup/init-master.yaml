@@ -17,8 +17,8 @@
       remote_src: yes
       src: /etc/kubernetes/admin.conf
       dest: "{{ ansible_user_dir }}/.kube/config"
-      owner: {{ ansible_user_id }}
-      group: {{ ansible_user_gid }}
+      owner: "{{ ansible_user_id }}"
+      group: "{{ ansible_user_gid }}"
       
   - name: configuring POD network
     shell: kubectl apply -f https://docs.projectcalico.org/v3.11/manifests/calico.yaml && sleep 60 && kubetctl get nodes
